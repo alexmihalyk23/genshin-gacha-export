@@ -87,7 +87,7 @@ const readLog = async () => {
     const userPath = app.getPath('home')
     const gameNames = await detectGameLocale(userPath)
     if (!gameNames.length) {
-      sendMsg("Can't find the wish history, please make sure you've opened wish history interface.")
+        sendMsg("Не удается найти историю молитв, убедитесь, что вы открыли интерфейс истории молитв.")
       return false
     }
     const promises = gameNames.map(async name => {
@@ -103,10 +103,10 @@ const readLog = async () => {
         return url
       }
     }
-    sendMsg('URL not found.')
+    sendMsg('URL не найден.')
     return false
   } catch (e) {
-    sendMsg('Unable to read the wish history.')
+    sendMsg('Невозможно прочитать историю молитв.')
     return false
   }
 }
@@ -119,12 +119,12 @@ const getGachaLog = async (key, page, name, retryCount = 5) => {
     return res.data.list
   } catch (e) {
     if (retryCount) {
-      sendMsg(`Fetch failed in ${name} for page ${page}，retrying in 5 seconds (${6 - retryCount} attempts……)`)
+      sendMsg(`Ошибка получения в ${name} на странице ${page}，повторная попытка через 5 секунд (${6 - retryCount} ……)`)
       await sleep(5)
       retryCount--
       return await getGachaLog(key, page, name, retryCount)
     } else {
-      sendMsg(`Fetch failed in ${name} for page ${page}，you have reached the maximum retry attempt.`)
+      sendMsg(`Ошибка получения ${name} для страницы ${page}，вы достигли максимального количества повторных попыток.`)
       throw e
     }
   }
@@ -136,10 +136,10 @@ const getGachaLogs = async (name, key) => {
   let res = []
   do {
     if (page % 10 === 0) {
-      sendMsg(`Fetching from ${name} - Page ${page}，rest for 1 second for every 10 pages……`)
+      sendMsg(`Получение из ${name} - Страница ${page}`)
       await sleep(1)
     }
-    sendMsg(`Fetching from ${name} - Page ${page}`)
+    sendMsg(`Получение из ${name} - Страница ${page}`)
     res = await getGachaLog(key, page, name)
     if (!uid && res.length) {
       uid = res[0].uid
@@ -157,7 +157,7 @@ const getData = async () => {
   if (!url) return false
   const { searchParams } = new URL(url)
   if (!searchParams.get('authkey')) {
-    sendMsg('Unable to fetch login information from URL.')
+      sendMsg('Невозможно получить информацию для входа по URL-адресу.')
     return false
   }
   if (localData && localData.lang) {
@@ -167,11 +167,11 @@ const getData = async () => {
   const queryString = searchParams.toString()
   GachaTypesUrl = `https://hk4e-api.mihoyo.com/event/gacha_info/api/getConfigList?${queryString}`
   GachaLogBaseUrl = `https://hk4e-api.mihoyo.com/event/gacha_info/api/getGachaLog?${queryString}`
-  sendMsg('Fetching wish types...')
+  sendMsg('Получение типов молитв...')
   const res = await request(GachaTypesUrl)
   if (res.retcode !== 0) {
     if (res.message === 'authkey timeout') {
-      sendMsg('Login information expired, please re-open the wish history interface and try again.')
+        sendMsg('Срок действия информации для входа истек, пожалуйста, повторно откройте интерфейс истории молитв и попробуйте еще раз.')
     } else {
       sendMsg(res.message)
     }
@@ -186,7 +186,7 @@ const getData = async () => {
     }
   })
   orderedGachaTypes.push(...gachaTypes)
-  sendMsg('Successfully fetched wish types.')
+  sendMsg('Молитвы получены успешно!')
   for (const type of orderedGachaTypes) {
     const logs = (await getGachaLogs(type.name, type.key)).map((item) => {
       return [item.time, item.name, item.item_type, parseInt(item.rank_type)]

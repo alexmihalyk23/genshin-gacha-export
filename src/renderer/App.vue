@@ -1,6 +1,6 @@
 <template>
-  <el-button class="focus:outline-none" :disabled="!allowClick()" plain size="small" @click="fetchData" :loading="state.status === 'loading'">{{state.status === 'init' ? 'Load Data': 'Update Data'}}</el-button>
-  <el-button @click="saveExcel" class="focus:outline-none" :disabled="!state.data" size="small" type="success" plain>Export to Excel</el-button>
+  <el-button class="focus:outline-none" :disabled="!allowClick()" plain size="small" @click="fetchData" :loading="state.status === 'loading'">{{state.status === 'init' ? 'Загрузить данные': 'Обновить Данные'}}</el-button>
+  <el-button @click="saveExcel" class="focus:outline-none" :disabled="!state.data" size="small" type="success" plain>Экспорт в Excel</el-button>
   <p class="text-gray-400 my-2 text-xs">{{hint}}</p>
   <div v-if="detail" class="flex gap-4 flex-wrap justify-between cont">
     <div class="flex-grow flex-shrink-0 mb-4 w-64" v-for="(item, i) of detail" :key="i">
@@ -36,9 +36,9 @@ const allowClick = () => {
 
 const hint = computed(() => {
   if (state.status === 'init') {
-    return 'Please login to Genshin, open up your wish history and click on "Load Data"'
+    return 'Пожалуйста войдите в Genshin impact, Откройте историю молитв и нажмите на "Загрузить данные"'
   } else if (state.status === 'loaded') {
-    return `Last Updated：${new Date(state.data.time).toLocaleString()}`
+    return `Последнее обновление：${new Date(state.data.time).toLocaleString()}`
   } else if (state.status === 'loading') {
     return state.log
   } else if (state.status === 'failed') {

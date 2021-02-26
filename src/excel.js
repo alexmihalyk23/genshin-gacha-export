@@ -1,4 +1,4 @@
-const ExcelJS = require('./module/exceljs.min.js')
+﻿const ExcelJS = require('./module/exceljs.min.js')
 const readData = require('./getData').readData
 const { app, ipcMain, dialog } = require('electron')
 const fs = require('fs-extra')
@@ -105,20 +105,20 @@ const start = async () => {
     })
   }
 
-  sendMsg("Done fetching wish history.")
+  sendMsg("Готово!")
 
-  sendMsg("Exporting...")
+  sendMsg("Экспорт...")
   const buffer = await workbook.xlsx.writeBuffer()
   const filePath = dialog.showSaveDialogSync({
     defaultPath: path.join(app.getPath('downloads'), `Genshin_Wish_History_${getTimeString()}`),
     filters: [
-      { name: 'Excel文件', extensions: ['xlsx'] }
+      { name: 'Excel', extensions: ['xlsx'] }
     ]
   })
   if (filePath) {
     await fs.ensureFile(filePath)
     await fs.writeFile(filePath, buffer)
-    sendMsg("Exported successfully.")
+    sendMsg("Экспорт завершен.")
   }
 }
 

@@ -1,4 +1,4 @@
-<template>
+﻿<template>
   <div class="chart mb-2 relative h-48 lg:h-56 xl:h-64 2xl:h-72">
     <div ref="chart" class="absolute inset-0"></div>
   </div>
@@ -28,11 +28,11 @@ const props = defineProps({
 const chart = ref(null)
 
 const keys = [
-  ['5* Character', 'count5c'],
-  ['5* Weapon', 'count5w'],
-  ['4* Character', 'count4c'],
-  ['4* Weapon', 'count4w'],
-  ['3* Weapon', 'count3w']
+  ['5* Герой', 'count5c'],
+  ['5* Оружие', 'count5w'],
+  ['4* Герой', 'count4c'],
+  ['4* Оружие', 'count4w'],
+  ['3* Оружие', 'count3w']
 ]
 
 const colors = [
